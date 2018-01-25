@@ -49,17 +49,14 @@ else if (part == "xt90")
 
 module xt60_panel_mount(tolerance, flush = true)
 {
-      xt_panel_mount(xt60_height + tolerance, xt60_width + tolerance, xt60_length + tolerance);
+    protrude_length = flush == true ? 0:xt90_protrude_length;
+    xt_panel_mount(xt60_height + tolerance, xt60_width + tolerance, xt60_length + tolerance - protrude_length);
 }
 
 module xt90_panel_mount(tolerance, flush = true)
 {
     protrude_length = flush == true ? 0:xt90_protrude_length;
-
     xt_panel_mount(xt90_height + tolerance, xt90_width + tolerance, xt90_length + tolerance - protrude_length);
-
-
-
 }
 
 module xt_panel_mount(xt_height, xt_width, xt_length, panel_thickness = 2, body_thickness = 2, panel_width = 4)
