@@ -16,7 +16,7 @@ $fn = 100;
 //*******************************************
 part = "xt60";          // "xt60" "xt90"
 tol = -0.2;             // Set the tolerance for a tighter or looser fit. Set negative values (~-0.2)for a press fit
-flush = false;          // Sets connector to be flush with panel but that leaves little space for gripping the mating connector. Set false for connector to protrude but give more space for gripping the mating connector.
+flush = true;          // Sets connector to be flush with panel but that leaves little space for gripping the mating connector. Set false for connector to protrude but give more space for gripping the mating connector.
 
 //******************************************* 
 // END Choose part
@@ -26,7 +26,7 @@ flush = false;          // Sets connector to be flush with panel but that leaves
 
 xt60_height = 15.6;
 xt60_width = 7.9;
-xt60_length = 16.4;
+xt60_length = 16.2;
 
 xt90_height= 20.9;
 xt90_width = 9.95;
@@ -49,7 +49,7 @@ else if (part == "xt90")
 
 module xt60_panel_mount(tolerance, flush = true)
 {
-    protrude_length = flush == true ? 0:xt90_protrude_length;
+    protrude_length = flush == true ? 0:xt60_protrude_length;
     xt_panel_mount(xt60_height + tolerance, xt60_width + tolerance, xt60_length + tolerance - protrude_length);
 }
 
@@ -72,20 +72,16 @@ module xt_panel_mount(xt_height, xt_width, xt_length, panel_thickness = 2, body_
         {
             // Panel Lip
             
-            //cylinder(d = xt_height + body_thickness + panel_width, h = panel_thickness);
             translate([0,0,-panel_thickness/2])
             roundedBox([xt_height + body_thickness * 2 + panel_width * 2, xt_width + body_thickness * 2 + panel_width * 2, panel_thickness],fillet_radius, true);
             
             // Main body
-            //cylinder(d = xt_height + body_thickness, h = xt_length + lip_thickness);
             translate([0,0,xt_length/2 + lip_thickness/2])
             cube([xt_height + body_thickness * 2, xt_width + body_thickness * 2, xt_length + lip_thickness],center = true);
             
        }
        // XT cutouts
        translate([0,0,xt_length/2 - 0.1])
-       
-       
        cube([xt_height,xt_width, xt_length], center = true);
        // Cutting out extra space for loose fit
        translate([0,0,xt_length/2 - 7.5])
@@ -95,8 +91,6 @@ module xt_panel_mount(xt_height, xt_width, xt_length, panel_thickness = 2, body_
        // Cutout for xt90 slots on side
        translate([0,0,xt_length/2])
        cube([xt90_side_nib_length,xt_width + 1, xt_length- 0.01], center = true);
-
- 
     }
     // Lip for XT cutout
     difference()
@@ -106,16 +100,9 @@ module xt_panel_mount(xt_height, xt_width, xt_length, panel_thickness = 2, body_
         {
         cube([lip_length, xt_width, lip_thickness], center = true);
         
-
         }
         // Cut lip
         translate([0,0,xt_length + lip_thickness/2])
         cube([xt_height, xt_width-lip_thickness, lip_thickness +0.1], center = true);
-        
-
-        
-       
     }
-    
-    // Below was used for cylindrical panel mount
 }
